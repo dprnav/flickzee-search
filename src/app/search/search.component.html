@@ -1,0 +1,106 @@
+<!-- <div class="search-container">
+  <input #query type="text" name="search-str" class="search-box" id="search-str" placeholder="Search Movies" [value]="searchQuery"/>
+  <button (click)="search(query.value)" type="submit" class="search-btn"></button>
+</div>
+
+<div class="container">
+  <div *ngFor="let movie of movies" class="card">
+    <div class="card-body">
+      <b><p>{{movie.MovieName}}({{movie.Year}})</p></b>
+      <img src="assets\movie-image.jpg" alt="" class="movie-image">
+      <table>
+        <tr>
+          <td><h4>IMDB Rating </h4></td>
+          <td><h5>{{movie.IMDbRating}}</h5></td>
+        </tr>
+        <tr>
+          <td><h4>Language</h4></td>
+          <td><h5>{{movie.Language}}</h5></td>
+        </tr>
+        <tr>
+          <td><h4>Alt Text</h4></td>
+          <td><h5>{{movie.AltText}}</h5></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div> -->
+
+<div class="heder-bg">
+  <div class="container">
+    <div class="row menubg">
+      <div class="twleve columns logo-bg">
+        <div class="three columns">
+          <a href="https://www.flickzee.com/" title="FlickZee">
+            <img src="assets/flickZee.png" alt="FlickZee">
+          </a>
+        </div>
+        <div class="six columns">
+          <div class="search-form">
+            <input #query type="text" name="searchTerm" class="searchInput" id="searchTerm" placeholder="Search any movie you wanna watch" [value]="searchQuery" />
+            <span (click)="search(query.value)" id="searchIcon"></span>
+          </div>
+        </div>
+        <div class="three columns">
+          <a href="https://www.flickzee.com/blog" class="blog-link" title="Blog">Blog</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container bgWhite">
+  <div ng-if="movies.length > 0">
+    <div *ngFor="let movie of movies" class="row">
+      <div class="twelve card columns">
+        <h2><a href={{movie.url}}>{{movie.MovieName}} ({{movie.Year}})</a></h2>
+        <div class="movie-info">
+          <div class="five columns">
+            <a href={{movie.url}} title={{movie.MovieName}}>
+              <img class="movie-img" src="https://www.flickzee.com/assets/movieimages/movie-id-120092.jpeg" alt="Fanaa Watch Online">
+            </a>
+          </div>
+          <!-- <div class="seven columns">
+            <span class="twelve columns avail-on">Watch Online</span>
+            <div class="two columns icon-container">
+              <img class="showpointer icon-class wtwtrigger" onclick="window.open(&#39;https://www.apple.com/in/search/Fanaa&#39;, &#39;_blank&#39;)"
+                src="./&#39;fanaa&#39; - FlickZee Search Results - Find where to watch your favourite Movie &amp; TV Show_files/iTunes.png" alt="iTunes">
+            </div>
+            <div class="two columns icon-container">
+              <img class="showpointer icon-class wtwtrigger" onclick="window.open(&#39;https://www.primevideo.com/search/ref=atv_nb_sr?ie=UTF8&amp;phrase=Fanaa&#39;, &#39;_blank&#39;)"
+                src="./&#39;fanaa&#39; - FlickZee Search Results - Find where to watch your favourite Movie &amp; TV Show_files/PrimeVideo.png" alt="PrimeVideo">
+            </div>
+            <div class="two columns icon-container">
+              <img class="showpointer icon-class wtwtrigger" onclick="window.open(&#39;https://play.google.com/store/search?q=Fanaa&#39;, &#39;_blank&#39;)"
+                src="./&#39;fanaa&#39; - FlickZee Search Results - Find where to watch your favourite Movie &amp; TV Show_files/GooglePlay.png" alt="GooglePlay">
+            </div>
+            <div class="two columns icon-container">
+              <img class="showpointer icon-class wtwtrigger" onclick="window.open(&#39;https://www.youtube.com/results?search_query=Fanaa&#39;, &#39;_blank&#39;)"
+                src="./&#39;fanaa&#39; - FlickZee Search Results - Find where to watch your favourite Movie &amp; TV Show_files/YouTube.png" alt="YouTube">
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div ng-if="movies.length == 0">
+    <div class="twelve card columns">
+      <div class="movie-info">
+      <div class="twelve columns">
+        <p>No match found for "{{query.value}}".<br>Check the spelling or type IMDB Movie Name</p>
+        <a href="mailto:flickzeemovies@gmail.com?subject=I%20Found%20zssdasd" title="Found it">Found it? <br> Let everyone know !</a>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row footer-height">
+    <div class="twelve columns">
+      <p class="Have-something-to-sa"><a
+          href="mailto:flickzeemovies@gmail.com?subject=Have%20something%20to%20say&amp;body=We%20value%20your%20feedback%20and%20are%20looking%20forward%20to%20your%20mail.%20Please%20tell%20us%20what%20you%20feel%20about%20the%20product."
+          title="Have something to say? We&#39;re excited !">Have something to say? We're excited !</a></p>
+    </div>
+  </div>
+</div>
