@@ -24,11 +24,9 @@ export class SearchComponent implements OnInit {
         return new Movie(
           item.MovieName,
           item.Year,
-          item.IMDbRating,
-          item.IMDbVotes,
-          item.Awards,
-          item.Language,
-          item.AltText
+          item.id,
+          item.slug,
+          item.poster
         );
       });
     });

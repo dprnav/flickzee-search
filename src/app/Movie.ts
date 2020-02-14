@@ -2,20 +2,16 @@ export class Movie {
 
   public MovieName: string;
   public Year: number;
-  public IMDbRating: number;
-  public IMDbVotes: number;
-  public Awards: number;
-  public Language: string;
-  public AltText: string;
+  public id: number;
+  public slug: string;
+  public poster: string;
 
-  constructor( MovieName:string, Year:number, IMDbRating:number, IMDbVotes:number, Awards:number, Language:string, AltText:string) {
+  constructor( MovieName:string, Year:number, id:number, slug:string, poster:string) {
     this.MovieName = MovieName;
     this.Year = Year;
-    this.IMDbRating = IMDbRating;
-    this.IMDbVotes = IMDbVotes;
-    this.Awards = Awards;
-    this.Language = Language;
-    this.AltText = AltText;
+    this.id = id;
+    this.slug = slug;
+    this.poster = poster;
   }
 
 }

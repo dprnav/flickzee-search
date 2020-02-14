@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class SearchService {
 
-  private _url: string = "http://localhost:5000/search?"
+  private _url: string = "http://15.206.79.28:5000/search?"
   constructor(private http: HttpClient) { }
 
 
