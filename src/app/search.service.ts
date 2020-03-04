@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Movie } from './Movie';
+import { Provider } from './Provider';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -8,12 +9,17 @@ import { Observable } from 'rxjs';
 })
 export class SearchService {
 
-  private _url: string = "http://15.206.79.28:5000/search?"
+  private _urlsearch: string = "http://localhost:5000/search?"
+  private _urlprovider: string = "http://localhost:5000/providers?"
   constructor(private http: HttpClient) { }
 
 
   searchMovies(name: string): Observable<Movie[]>{
    let httpParams = new HttpParams().set('query', name);
-   return this.http.get<Movie[]>(this._url+httpParams.toString());
+   return this.http.get<Movie[]>(this._urlsearch+httpParams.toString());
+  }
+  getProviders(imdb: string,country: string,mtype: string,ptype: string): Observable<Provider[]>{
+   let httpParams = "imdb="+imdb+"&country="+country+"&mtype="+mtype+"&ptype="+ptype;
+   return this.http.get<Provider[]>(this._urlprovider+httpParams);
   }
 }
