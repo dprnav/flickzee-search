@@ -8,9 +8,11 @@
           </a>
         </div>
         <div class="six columns">
-          <div class="search-form">
-            <input #query type="text" name="searchTerm" class="searchInput" id="searchTerm" placeholder="Search any movie you wanna watch" [value]="searchQuery" />
-            <span (click)="search(query.value)" id="searchIcon"></span>
+          <div id="search" class="search-form">
+            <div class="autocomplete">
+              <input #query autocomplete="off" (keyup.enter)="searchbtn.click()" type="text" name="searchTerm" class="searchInput" id="searchTerm" placeholder="Search any movie you wanna watch" [value]="searchQuery" />
+            </div>
+            <span #searchbtn (click)="search(query.value)" id="searchIcon"></span>
           </div>
         </div>
         <div class="three columns">
@@ -29,32 +31,40 @@
         <div class="movie-info">
           <div class="five columns">
             <a href='https://teaser.flickzee.com/full-movie/{{movie.slug}}-watch-online-{{movie.id}}' title={{movie.MovieName}}>
-              <img class="movie-img" src="https://teaser.flickzee.com/assets/movieimages/movie-id-{{movie.id}}.jpeg" alt="{{movie.MovieName}} Watch Online">
+              <img class="movie-img" src="https://teaser.flickzee.com/assets/movieimages/movie-id-{{movie.id}}.jpeg" onerror="this.onerror=null; this.src='https://www.flickzee.com/images/missing.png'" alt="{{movie.MovieName}} Watch Online">
             </a>
+          </div>
+          <div class="seven columns">
+            <span class="twelve columns avail-on">Watch Online</span>
+            <span (click)="getProviders(movie)">hye</span>
+            <div *ngFor="let provider of providers" class="two columns icon-container">
+              <a href='{{provider.url}}'>
+                <img class="showpointer icon-class wtwtrigger" src="" alt="NA">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="movies.length == 0">
+      <div class="twelve card columns">
+        <div class="movie-info">
+          <div class="twelve columns">
+            <p>No match found.<br>Check the spelling or type IMDB Movie Name</p>
+            <a href="mailto:flickzeemovies@gmail.com?subject=I%20Found%20zssdasd" title="Found it">Found it? <br> Let everyone know !</a>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div *ngIf="movies.length == 0">
-    <div class="twelve card columns">
-      <div class="movie-info">
+  <div class="container">
+    <div class="row footer-height">
       <div class="twelve columns">
-        <p>No match found.<br>Check the spelling or type IMDB Movie Name</p>
-        <a href="mailto:flickzeemovies@gmail.com?subject=I%20Found%20zssdasd" title="Found it">Found it? <br> Let everyone know !</a>
-      </div>
+        <p class="Have-something-to-sa"><a
+            href="mailto:flickzeemovies@gmail.com?subject=Have%20something%20to%20say&amp;body=We%20value%20your%20feedback%20and%20are%20looking%20forward%20to%20your%20mail.%20Please%20tell%20us%20what%20you%20feel%20about%20the%20product."
+            title="Have something to say? We&#39;re excited !">Have something to say? We're excited !</a></p>
       </div>
     </div>
   </div>
-</div>
-
-<div class="container">
-  <div class="row footer-height">
-    <div class="twelve columns">
-      <p class="Have-something-to-sa"><a
-          href="mailto:flickzeemovies@gmail.com?subject=Have%20something%20to%20say&amp;body=We%20value%20your%20feedback%20and%20are%20looking%20forward%20to%20your%20mail.%20Please%20tell%20us%20what%20you%20feel%20about%20the%20product."
-          title="Have something to say? We&#39;re excited !">Have something to say? We're excited !</a></p>
-    </div>
-  </div>
-</div>

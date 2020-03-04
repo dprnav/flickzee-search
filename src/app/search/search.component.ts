@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Directive, Output, EventEmitter, Input, SimpleChange } from '@angular/core';
 import { SearchService } from '../search.service';
 import { Movie } from '../Movie';
+import { Provider } from '../Provider';
 import { ActivatedRoute, Router } from '@angular/router';
 
 
@@ -13,6 +14,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class SearchComponent implements OnInit {
 
   movies = new Array<Movie>();
+  providers = new Array<Provider>();
   searchQuery = "";
   constructor(private _searchService: SearchService, private route: ActivatedRoute,private router: Router) { }
 
@@ -26,10 +28,100 @@ export class SearchComponent implements OnInit {
           item.Year,
           item.id,
           item.slug,
-          item.poster
+          item.poster,
+          item.imdb
         );
       });
     });
+  }
+
+  getProviders(movie: Movie){
+    this._searchService.getProviders(movie.imdb,'IN','flatrate','hd').subscribe(response =>
+    {
+      this.providers = response.map(item =>
+      {
+        return new Provider(
+          item.country,
+          item.imdb,
+          item.provider_id,
+          item.url,
+          item.mtype,
+          item.ptype,
+          item.currency,
+          item.price
+        );
+      });
+    });
+  }
+
+  autocomplete(inp) {
+    var currentFocus;
+    var self = this;
+    inp.addEventListener("input", function(e) {
+        var a, b, i, val = this.value;
+        closeAllLists();
+        if (!val) { return false;}
+        currentFocus = -1;
+        a = document.createElement("DIV");
+        a.setAttribute("id", this.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+        this.parentNode.appendChild(a);
+        self._searchService.searchMovies(val).subscribe(response =>
+        {
+          response.map(item =>
+          {
+            b = document.createElement("DIV");
+            b.innerHTML = "<strong>" + item.MovieName + "</strong>";
+            b.innerHTML += "("+item.Year+")";
+            b.innerHTML += "<input type='hidden' value='" + item.MovieName + "'>";
+            b.addEventListener("click", function(e) {
+              inp.value = this.getElementsByTagName("input")[0].value;
+              closeAllLists();
+            });
+            a.appendChild(b);
+          });
+        });
+
+    });
+    inp.addEventListener("keydown", function(e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        if (e.keyCode == 40) {
+          currentFocus++;
+          addActive(x);
+        } else if (e.keyCode == 38) { //up
+          currentFocus--;
+          addActive(x);
+        } else if (e.keyCode == 13) {
+          e.preventDefault();
+          if (currentFocus > -1) {
+            if (x) x[currentFocus].click();
+          }
+        }
+    });
+    function addActive(x) {
+      if (!x) return false;
+      removeActive(x);
+      if (currentFocus >= x.length) currentFocus = 0;
+      if (currentFocus < 0) currentFocus = (x.length - 1);
+      x[currentFocus].classList.add("autocomplete-active");
+    }
+    function removeActive(x) {
+      for (var i = 0; i < x.length; i++) {
+        x[i].classList.remove("autocomplete-active");
+      }
+    }
+    function closeAllLists(elmnt) {
+      var x = document.getElementsByClassName("autocomplete-items");
+      for (var i = 0; i < x.length; i++) {
+        if (elmnt != x[i] && elmnt != inp) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }
+  }
+  document.addEventListener("click", function (e) {
+      closeAllLists(e.target);
+  });
   }
   ngOnInit() {
     this.route
@@ -38,5 +130,8 @@ export class SearchComponent implements OnInit {
         this.searchQuery = params['query'];
         this.search(params['query']);
       });
+      console.log("hello");
+      this.autocomplete(document.getElementById("searchTerm"));
   }
+
 }
