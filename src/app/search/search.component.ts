@@ -32,11 +32,30 @@ export class SearchComponent implements OnInit {
           item.imdb
         );
       });
+      var movie_html = document.getElementById("movies");
+      movie_html.innerHTML = ``;
+      if(this.movies.length==0){
+        movie_html.innerHTML = '<div class="twelve card columns"><div class="movie-info"><div class="twelve columns"><p>No match found.<br>Check the spelling or type IMDB Movie Name</p><a href="mailto:flickzeemovies@gmail.com?subject=I%20Found%20zssdasd" title="Found it">Found it? <br> Let everyone know !</a></div></div></div>'
+      }
+      for (var i = 0; i < this.movies.length; i++){
+        var movie = this.movies[i];
+        movie_html.innerHTML += `<div class="row"><div class="twelve card columns">
+          <h2><a href='https://www.flickzee.com/full-movie/`+movie.slug+`-watch-online-`+movie.id+`'>`+movie.MovieName+` (`+movie.Year+`)</a></h2>
+          <div class="movie-info">
+            <div class="five columns">
+              <a href='https://www.flickzee.com/full-movie/`+movie.slug+`-watch-online-`+movie.id+`' title=`+movie.MovieName+`>
+                <img class="movie-img" src="https://www.flickzee.com/assets/movieimages/movie-id-`+movie.id+`.jpeg" onerror="this.onerror=null; this.src='https://www.flickzee.com/images/missing.png'" alt="`+movie.MovieName+` Watch Online">
+              </a>
+            </div>
+            <div class="seven columns">
+              <span class="twelve columns avail-on">Watch Online</span><div id="`+movie.imdb+`Provider">`
+        this.getProviders(movie);
+      }
+      movie_html.innerHTML += `</div></div></div></div>`
     });
   }
-
-  getProviders(movie: Movie){
-    this._searchService.getProviders(movie.imdb,'IN','flatrate','hd').subscribe(response =>
+  async getProviders(movie: Movie){
+    await this._searchService.getProviders(movie.id.toString(),'IN','flatrate','hd').toPromise().then(response =>
     {
       this.providers = response.map(item =>
       {
@@ -52,19 +71,26 @@ export class SearchComponent implements OnInit {
         );
       });
     });
+    var provider_html = document.getElementById(movie.imdb+"Provider");
+    for(var j=0;j<this.providers.length;j++){
+        var provider = this.providers[j];
+        provider_html.innerHTML += `<div class="two columns icon-container"><a href='`+provider.url+`'><img class="showpointer icon-class wtwtrigger" src="" alt="NA"></a></div>`
+    }
   }
 
   autocomplete(inp) {
-    /*the autocomplete function takes two arguments,
-    the text field element and an array of possible autocompleted values:*/
     var currentFocus;
     var self = this;
     /*execute a function when someone writes in the text field:*/
     inp.addEventListener("input", function(e) {
         var a, b, i, val = this.value;
+
         /*close any already open lists of autocompleted values*/
         closeAllLists(null);
+
         if (!val) { return false;}
+        if(val.length<=3)
+          return;
         currentFocus = -1;
         /*create a DIV element that will contain the items (values):*/
         a = document.createElement("DIV");
