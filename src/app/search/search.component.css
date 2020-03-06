@@ -202,7 +202,8 @@ a {
 }
 
 .search-form {
-  position: relative
+  position: relative;
+  margin: 0px;
 }
 
 .logo-bg a img {

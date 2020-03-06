@@ -172,8 +172,8 @@ export class SearchComponent implements OnInit {
     this.route
       .queryParams
       .subscribe(params => {
-        this.searchQuery = params['query'];
-        this.search(params['query']);
+        this.searchQuery = params['q'];
+        this.search(params['q']);
       });
     this.autocomplete(document.getElementById("searchTerm"));
   }

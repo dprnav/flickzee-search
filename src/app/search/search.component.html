@@ -8,12 +8,12 @@
           </a>
         </div>
         <div class="six columns">
-          <div id="search" class="search-form">
+          <form #form id="search" action="/" class="search-form" method="get">
             <div class="autocomplete">
-              <input #query autocomplete="off" (keyup.enter)="searchbtn.click()" type="text" name="searchTerm" class="searchInput" id="searchTerm" placeholder="Search any movie you wanna watch" [value]="searchQuery" />
+              <input #query autocomplete="off" (keyup.enter)="form.submit()" type="text" name="q" class="searchInput" id="searchTerm" placeholder="Search any movie you wanna watch" [value]="searchQuery" />
             </div>
-            <span #searchbtn (click)="search(query.value)" id="searchIcon"></span>
-          </div>
+            <span #searchbtn (click)="form.submit()" id="searchIcon"></span>
+          </form>
         </div>
         <div class="three columns">
           <a href="https://www.flickzee.com/blog" class="blog-link" title="Blog">Blog</a>
@@ -36,3 +36,24 @@
       </div>
     </div>
   </div>
+
+
+  <!-- <div class="seven columns">
+  <span class="twelve columns avail-on">Watch Online</span>
+  <div class="two columns icon-container">
+    <img class="showpointer icon-class wtwtrigger" onclick="window.open(&#39;https://www.apple.com/in/search/Fanaa&#39;, &#39;_blank&#39;)"
+      src="./&#39;fanaa&#39; - FlickZee Search Results - Find where to watch your favourite Movie &amp; TV Show_files/iTunes.png" alt="iTunes">
+  </div>
+  <div class="two columns icon-container">
+    <img class="showpointer icon-class wtwtrigger" onclick="window.open(&#39;https://www.primevideo.com/search/ref=atv_nb_sr?ie=UTF8&amp;phrase=Fanaa&#39;, &#39;_blank&#39;)"
+      src="./&#39;fanaa&#39; - FlickZee Search Results - Find where to watch your favourite Movie &amp; TV Show_files/PrimeVideo.png" alt="PrimeVideo">
+  </div>
+  <div class="two columns icon-container">
+    <img class="showpointer icon-class wtwtrigger" onclick="window.open(&#39;https://play.google.com/store/search?q=Fanaa&#39;, &#39;_blank&#39;)"
+      src="./&#39;fanaa&#39; - FlickZee Search Results - Find where to watch your favourite Movie &amp; TV Show_files/GooglePlay.png" alt="GooglePlay">
+  </div>
+  <div class="two columns icon-container">
+    <img class="showpointer icon-class wtwtrigger" onclick="window.open(&#39;https://www.youtube.com/results?search_query=Fanaa&#39;, &#39;_blank&#39;)"
+      src="./&#39;fanaa&#39; - FlickZee Search Results - Find where to watch your favourite Movie &amp; TV Show_files/YouTube.png" alt="YouTube">
+  </div>
+</div> -->
