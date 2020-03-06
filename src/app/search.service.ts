@@ -20,7 +20,6 @@ export class SearchService {
   }
   getProviders(id: string,country: string): Observable<Provider[]>{
    let httpParams = "id="+id+"&country="+country;
-   console.log(this._urlprovider+httpParams);
    return this.http.get<Provider[]>(this._urlprovider+httpParams);
   }
 }
