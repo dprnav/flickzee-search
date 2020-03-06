@@ -18,8 +18,9 @@ export class SearchService {
    let httpParams = new HttpParams().set('query', name);
    return this.http.get<Movie[]>(this._urlsearch+httpParams.toString());
   }
-  getProviders(id: string,country: string,mtype: string,ptype: string): Observable<Provider[]>{
-   let httpParams = "id="+id+"&country="+country+"&mtype="+mtype+"&ptype="+ptype;
+  getProviders(id: string,country: string): Observable<Provider[]>{
+   let httpParams = "id="+id+"&country="+country;
+   console.log(this._urlprovider+httpParams);
    return this.http.get<Provider[]>(this._urlprovider+httpParams);
   }
 }

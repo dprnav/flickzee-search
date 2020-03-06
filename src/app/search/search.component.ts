@@ -54,19 +54,15 @@ export class SearchComponent implements OnInit {
     });
   }
   async getProviders(movie: Movie){
-    await this._searchService.getProviders(movie.id.toString(),'IN','flatrate','hd').toPromise().then(response =>
+    await this._searchService.getProviders(movie.id.toString(),'IN').toPromise().then(response =>
     {
       this.providers = response.map(item =>
       {
         return new Provider(
           item.country,
-          item.imdb,
+          item.id,
           item.provider_id,
-          item.url,
-          item.mtype,
-          item.ptype,
-          item.currency,
-          item.price
+          item.url
         );
       });
     });
@@ -75,7 +71,7 @@ export class SearchComponent implements OnInit {
       provider_html.innerHTML += `<span class="twelve columns avail-on">Watch Online</span><div>`
       for(var j=0;j<this.providers.length;j++){
           var provider = this.providers[j];
-          provider_html.innerHTML += `<div class="two columns icon-container"><a href='`+provider.url+`'><img class="showpointer icon-class wtwtrigger" src="" alt="NA"></a></div>`
+          provider_html.innerHTML += `<div class="two columns icon-container"><a href='`+provider.url+`'><img class="showpointer icon-class wtwtrigger" src='assets/images/`+provider.provider_id+`.png' onerror="this.onerror=null; this.src='assets/images/na.png'" alt="NA"></a></div>`;
       }
     }
     else{
