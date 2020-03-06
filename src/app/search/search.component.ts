@@ -47,8 +47,7 @@ export class SearchComponent implements OnInit {
                 <img class="movie-img" src="https://www.flickzee.com/assets/movieimages/movie-id-`+movie.id+`.jpeg" onerror="this.onerror=null; this.src='https://www.flickzee.com/images/missing.png'" alt="`+movie.MovieName+` Watch Online">
               </a>
             </div>
-            <div class="seven columns">
-              <span class="twelve columns avail-on">Watch Online</span><div id="`+movie.imdb+`Provider">`
+            <div class="seven columns"  id="`+movie.imdb+`Provider">`
         this.getProviders(movie);
       }
       movie_html.innerHTML += `</div></div></div></div>`
@@ -72,9 +71,18 @@ export class SearchComponent implements OnInit {
       });
     });
     var provider_html = document.getElementById(movie.imdb+"Provider");
-    for(var j=0;j<this.providers.length;j++){
-        var provider = this.providers[j];
-        provider_html.innerHTML += `<div class="two columns icon-container"><a href='`+provider.url+`'><img class="showpointer icon-class wtwtrigger" src="" alt="NA"></a></div>`
+    if(this.providers.length>0){
+      provider_html.innerHTML += `<span class="twelve columns avail-on">Watch Online</span><div>`
+      for(var j=0;j<this.providers.length;j++){
+          var provider = this.providers[j];
+          provider_html.innerHTML += `<div class="two columns icon-container"><a href='`+provider.url+`'><img class="showpointer icon-class wtwtrigger" src="" alt="NA"></a></div>`
+      }
+    }
+    else{
+      provider_html.innerHTML += `<div class="seven columns">
+                          <p>As far as we know, this movie/tv series is not Available anywhere online.</p><p>
+                <a href="mailto:flickzeemovies@gmail.com?subject=I Found Unns: Love... Forever" title="Found it">Found it? <br> Let everyone know !</a>
+                      </p></div>`
     }
   }
 
