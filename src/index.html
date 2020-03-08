@@ -1,23 +1,45 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Google Tag Manager -->
+  <script>
+        const path = window.location.pathname;
+        window.dataLayer = window.dataLayer || [];
+        let pageType = undefined;
+        if (path == '/')
+              pageType = 'home_page';
+        else if (path.indexOf('/full-movie/') == 0 || path.indexOf('/tv-series/') == 0)
+              pageType = 'moviedetail';
+        else if(path.indexOf("/collections/") == 0)
+              pageType = 'collections';
+
+        if (pageType) {
+              window.pageType = pageType;
+              window.dataLayer.push({ "page_type": pageType });
+        }
+        (function (w, d, s, l, i) {
+              w[l] = w[l] || []; w[l].push({
+                    'gtm.start':
+                          new Date().getTime(), event: 'gtm.js'
+              }); var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-K94524Q');
+  </script>
+  <!-- End Google Tag Manager -->
   <meta charset="utf-8">
   <title>FlickZee Search Results</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- <script type="text/javascript" src="assets/1.txt"></script>
-  <script type="text/javascript" src="assets/1(1).txt"></script> -->
-  <!-- <script type="text/javascript" src="assets/moatframe.js"></script> -->
   <link href="assets/fzsearch1554542066.min.css" rel="stylesheet" position="1">
-  <!-- <script src="assets/fzall1554542066.min.js"></script> -->
-  <!-- <script type="text/javascript" src="assets/connect.prod.min.js"></script> -->
-  <!-- <script type="text/javascript" async="" src="assets/analytics.js"></script>
-  <script type="text/javascript" src="assets/mustache.min.js"></script>
-  <script type="text/javascript" src="assets/sizzle.min.js"></script>
-  <script async="" src="assets/gtm.js"></script> -->
-  <!-- <link href="assets/css" rel="stylesheet" type="text/css"> -->
 </head>
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K94524Q"
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
   <app-root></app-root>
 </body>
 </html>

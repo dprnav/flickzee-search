@@ -1,23 +1,32 @@
 import { Component, OnInit, Directive, Output, EventEmitter, Input, SimpleChange } from '@angular/core';
-import { SearchService } from '../search.service';
-import { Movie } from '../Movie';
-import { Provider } from '../Provider';
+import { SearchService } from './search.service';
+import { Movie } from './Movie';
+import { Provider } from './Provider';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { WindowRef } from './WindowRef';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],
-  providers: [SearchService]
+  providers: [SearchService, WindowRef]
 })
 export class SearchComponent implements OnInit {
 
   movies = new Array<Movie>();
   providers = new Array<Provider>();
   searchQuery = "";
-  constructor(private _searchService: SearchService, private route: ActivatedRoute,private router: Router) { }
+  constructor(private _searchService: SearchService, private route: ActivatedRoute,private router: Router,private winRef: WindowRef) { }
 
+  pushEvent(eventName: string, eventAction: string){
+    var pushEventJson = {
+        'event': 'fzeeEvents',
+        'eventCategory': eventName,
+        'eventAction': eventAction,
+        'eventLabel': this.winRef.nativeWindow.dataLayer[0].page_type,
+    }
+    this.winRef.nativeWindow.dataLayer.push(pushEventJson);
+  }
   search(query: string){
     this._searchService.searchMovies(query).subscribe(response =>
     {
@@ -92,12 +101,19 @@ export class SearchComponent implements OnInit {
   autocomplete(inp) {
     var currentFocus;
     var self = this;
+
+    inp.addEventListener("focus",function(e){
+      self.pushEvent("search_box", "search_focus");
+    });
     inp.addEventListener("input", function(e) {
         var a, b, i, val = this.value;
         self.val_backup = this.value;
         closeAllLists(null);
 
         if (!val) { return false;}
+        if(val.length==1){
+          self.pushEvent("search_box", "search_type");
+        }
         if(val.length<=3)
           return;
         currentFocus = -1;
@@ -115,10 +131,9 @@ export class SearchComponent implements OnInit {
             b.innerHTML += `<input type='hidden' value='https://www.flickzee.com/full-movie/`+item.slug+`-watch-online-`+item.id+`'>`;
             b.innerHTML += `<input type='hidden' value='`+item.MovieName+`'>`;
             b.addEventListener("click", function(e) {
+              self.pushEvent("search_box", "movie_link_click")
+
               window.open(this.getElementsByTagName("input")[0].value,'_self');
-              //location.replace(this.getElementsByTagName("input")[0].value);
-              //inp.value = this.getElementsByTagName("input")[1].value;
-              // closeAllLists(null);
             });
             a.appendChild(b);
           });
@@ -136,6 +151,7 @@ export class SearchComponent implements OnInit {
             inp.value = self.val_backup;
           else
             inp.value = x[currentFocus].getElementsByTagName("input")[1].value;
+          self.pushEvent("search_box", "suggestion_movie_down");
         } else if (e.keyCode == 38) { //up
           event.preventDefault();
           currentFocus--;
@@ -144,6 +160,7 @@ export class SearchComponent implements OnInit {
             inp.value = self.val_backup;
           else
             inp.value = x[currentFocus].getElementsByTagName("input")[1].value;
+          self.pushEvent("search_box", "suggestion_movie_move_up");
         } else if (e.keyCode == 13) {
           event.preventDefault();
           if (currentFocus > -1) {
@@ -183,6 +200,7 @@ export class SearchComponent implements OnInit {
         this.searchQuery = params['q'];
         this.search(params['q']);
       });
+      this.pushEvent("search_box", "text_search");
     this.autocomplete(document.getElementById("searchTerm"));
   }
 
