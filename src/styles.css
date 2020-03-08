@@ -36,3 +36,35 @@ body{
   background-color: #ff7a38 !important;
   color: #ffffff;
 }
+
+.box{
+    position: relative;
+}
+
+.box .text{
+    position: absolute;
+    top: 20%; /* Adjust this value to move the positioned div up and down */
+}
+
+.box .ptext{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: 5%;
+
+}
+.box .text p{
+  line-height: 1;
+  padding-left: 15% !important;
+  text-transform:capitalize;
+}
+
+.box .ptext p{
+  line-height: 1;
+  padding-left: 0px !important;
+  text-transform:capitalize;
+  color: white;
+  font-size: 1.0rem;
+  text-align: center;
+  margin-top: 40%;
+}

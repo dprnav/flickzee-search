@@ -10,7 +10,7 @@
         <div class="six columns">
           <form #form id="search" action="/" class="search-form" method="get">
             <div class="autocomplete">
-              <input #query autocomplete="off" (keyup.enter)="form.submit()" type="text" name="q" class="searchInput" id="searchTerm" placeholder="Search any movie you wanna watch" [value]="searchQuery" />
+              <input #query autocomplete="off" (keydown.enter)="form.submit()" type="text" name="q" class="searchInput" id="searchTerm" placeholder="Search any movie you wanna watch" [value]="searchQuery" />
             </div>
             <span #searchbtn (click)="form.submit()" id="searchIcon"></span>
           </form>

@@ -70,8 +70,14 @@ export class SearchComponent implements OnInit {
     if(this.providers.length>0){
       provider_html.innerHTML += `<span class="twelve columns avail-on">Watch Online</span><div>`
       for(var j=0;j<this.providers.length;j++){
+          if(j==8)
+            break;
           var provider = this.providers[j];
-          provider_html.innerHTML += `<div class="two columns icon-container"><a href='`+provider.url+`'><img class="showpointer icon-class wtwtrigger" src='assets/images/`+provider.provider_id+`.png' onerror="this.onerror=null; this.src='assets/images/na.png'" alt="NA"></a></div>`;
+          provider_html.innerHTML += `<div class="two columns icon-container box"><a href='`+provider.url+`'><img class="showpointer icon-class wtwtrigger" src='assets/images/`+provider.provider_id+`.png' onerror="this.src='assets/images/na.png'; name=this.parentNode.href.split('.')[1]; this.parentNode.innerHTML+='<div class=ptext ><p>'+name+'</p></div>';"></a></div>`;
+      }
+      if(this.providers.length>8){
+          var more = this.providers.length-8;
+          provider_html.innerHTML += `<div class="two columns icon-container box"><a href='https://www.flickzee.com/full-movie/`+movie.slug+`-watch-online-`+movie.id+`' ><img class="showpointer icon-class wtwtrigger" src='assets/images/more.png'"><div class="text"><p>+`+more+` more</p></div></a></div>`;
       }
     }
     else{
@@ -82,25 +88,22 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  val_backup = '';
   autocomplete(inp) {
     var currentFocus;
     var self = this;
-    /*execute a function when someone writes in the text field:*/
     inp.addEventListener("input", function(e) {
         var a, b, i, val = this.value;
-
-        /*close any already open lists of autocompleted values*/
+        self.val_backup = this.value;
         closeAllLists(null);
 
         if (!val) { return false;}
         if(val.length<=3)
           return;
         currentFocus = -1;
-        /*create a DIV element that will contain the items (values):*/
         a = document.createElement("DIV");
         a.setAttribute("id", this.id + "autocomplete-list");
         a.setAttribute("class", "autocomplete-items");
-        /*append the DIV element as a child of the autocomplete container:*/
         this.parentNode.appendChild(a);
         self._searchService.searchMovies(val).subscribe(response =>
         {
@@ -109,57 +112,59 @@ export class SearchComponent implements OnInit {
             b = document.createElement("DIV");
             b.innerHTML = "<strong>" + item.MovieName + "</strong>";
             b.innerHTML += "("+item.Year+")";
-            b.innerHTML += "<input type='hidden' value='" + item.MovieName + "'>";
+            b.innerHTML += `<input type='hidden' value='https://www.flickzee.com/full-movie/`+item.slug+`-watch-online-`+item.id+`'>`;
+            b.innerHTML += `<input type='hidden' value='`+item.MovieName+`'>`;
             b.addEventListener("click", function(e) {
-              inp.value = this.getElementsByTagName("input")[0].value;
-              closeAllLists(null);
+              window.open(this.getElementsByTagName("input")[0].value,'_self');
+              //location.replace(this.getElementsByTagName("input")[0].value);
+              //inp.value = this.getElementsByTagName("input")[1].value;
+              // closeAllLists(null);
             });
             a.appendChild(b);
           });
         });
     });
-    /*execute a function presses a key on the keyboard:*/
+
     inp.addEventListener("keydown", function(e) {
         var y = <HTMLDivElement>document.getElementById(this.id + "autocomplete-list");
         if (y) var x = y.getElementsByTagName("div");
-        if (e.keyCode == 40) {
-          /*If the arrow DOWN key is pressed,
-          increase the currentFocus variable:*/
+        if (e.keyCode == 40) {//Down
+          event.preventDefault();
           currentFocus++;
-          /*and and make the current item more visible:*/
           addActive(x);
+          if(currentFocus==-1)
+            inp.value = self.val_backup;
+          else
+            inp.value = x[currentFocus].getElementsByTagName("input")[1].value;
         } else if (e.keyCode == 38) { //up
-          /*If the arrow UP key is pressed,
-          decrease the currentFocus variable:*/
+          event.preventDefault();
           currentFocus--;
-          /*and and make the current item more visible:*/
           addActive(x);
+          if(currentFocus==-1)
+            inp.value = self.val_backup;
+          else
+            inp.value = x[currentFocus].getElementsByTagName("input")[1].value;
         } else if (e.keyCode == 13) {
+          event.preventDefault();
           if (currentFocus > -1) {
-            /*and simulate a click on the "active" item:*/
             if (x) x[currentFocus].click();
           }
         }
     });
     function addActive(x) {
-      /*a function to classify an item as "active":*/
       if (!x) return false;
-      /*start by removing the "active" class on all items:*/
       removeActive(x);
-      if (currentFocus >= x.length) currentFocus = 0;
-      if (currentFocus < 0) currentFocus = (x.length - 1);
-      /*add class "autocomplete-active":*/
-      x[currentFocus].classList.add("autocomplete-active");
+      if (currentFocus >= x.length) currentFocus = -1;
+      if (currentFocus < -1) currentFocus = (x.length - 1);
+      if (currentFocus!=-1)
+        x[currentFocus].classList.add("autocomplete-active");
     }
     function removeActive(x) {
-      /*a function to remove the "active" class from all autocomplete items:*/
       for (var i = 0; i < x.length; i++) {
         x[i].classList.remove("autocomplete-active");
       }
     }
     function closeAllLists(elmnt) {
-      /*close all autocomplete lists in the document,
-      except the one passed as an argument:*/
       var x = document.getElementsByClassName("autocomplete-items");
       for (var i = 0; i < x.length; i++) {
         if (elmnt != x[i] && elmnt != inp) {
@@ -167,7 +172,6 @@ export class SearchComponent implements OnInit {
       }
     }
   }
-  /*execute a function when someone clicks in the document:*/
   document.addEventListener("click", function (e) {
       closeAllLists(e.target);
   });
